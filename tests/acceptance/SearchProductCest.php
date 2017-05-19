@@ -68,14 +68,14 @@ class SearchProductCest
 		$text 			   = $I->grabTextFrom('//h1[@itemprop="name"]');         // get 'Ром Captain Morgan Spiced Gold 0.7 л 35% (5000299223017)'
 		$counterOfComments = $I->grabTextFrom('//*[@name = "comments"]//span');  // get counter of comments
 		$raiting           = $I->grabAttributeFrom('//div[@data-location = "ProductPage"]//span[@class="g-rating-stars-i-medium"]', 'style');  // get raiting
-		$price             = $I->grabTextFrom('//span[@id="price_label"]');      // get price in UAH
+		$price             = $I->grabAttributeFrom('//meta[@itemprop="price"]', 'content');  // get price in UAH
 				
 		$I->see($text);              //  Compare ->  'Ром Captain Morgan Spiced Gold 0.7 л 35% (5000299223017)'
 		$I->see($counterOfComments); //  Counter of comments
 				
 		$raiting = trim(substr(substr(strrchr($raiting, ":"), 1), 0, -1));  // get raiting as '%'
-		
-		echo $price  . CURRENT_COURSE_OF_DOLLARS; //  print price in USD
+			
+		echo $price  / CURRENT_COURSE_OF_DOLLARS; // to print the price in USD
 		
 		\PHPUnit_Framework_Assert::assertEquals($raiting / 20,       EXPECTED_RESULT_OF_RAITING);  // checking raiting as 'Star'
 		\PHPUnit_Framework_Assert::assertEquals($counterOfComments,  EXPECTED_RESULT_OF_COMMENTS); // checking counter of comment
